@@ -36,25 +36,34 @@ class RoomsController extends AppController
     public function view($id = null)
     {
         $room = $this->Rooms->get($id);     
-        $showtimes = $this->Rooms->Showtimes->find();
-        
-        $room = $this->Rooms->get($id);
-        $date = Time::now();
-        
-        $dateAdd = Time::now();
-        $dateAdd->modify('+7 days');
-        date_add($dateAdd, date_interval_create_from_date_string('7 days'));
+               
+        $dateInf = new \DateTime('monday this week'); 
+        $dateSup = new \DateTime('sunday this week');
        
         $showtimes = $this->Rooms->Showtimes
             ->find()
             ->select(['id', 'movie_id', 'room_id', 'start', 'end'])
             ->where(['room_id =' => $room->id])
-            ->where(['start >' => $date])
-            ->where(['start <=' => $dateAdd])
+            ->where(['start >=' => $dateInf])
+            ->where(['start <=' => $dateSup])
             ->order(['created' => 'DESC']);
          
+        $showtimesThisWeek = [
+            1 => [],
+            2 => [],
+            3 => [],
+            4 => [],
+            5 => [],
+            6 => [],
+            7 => []
+        ];
+        
+        foreach ($showtimes as $show){
+            $n = $show->start->format('N');
+            array_push($showtimesThisWeek[$n], $show);
+        }
             
-        $this->set('showtimes', $showtimes);
+        $this->set('showtimesThisWeek', $showtimesThisWeek);
         $this->set('room', $room);
         $this->set('_serialize', ['room']);
     }

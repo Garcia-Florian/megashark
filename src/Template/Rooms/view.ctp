@@ -46,21 +46,24 @@
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('movie_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('start') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('end') ?></th>
+                <th scope="col">Lundi</th>
+                <th scope="col">Mardi</th>
+                <th scope="col">Mercredi</th>
+                <th scope="col">Jeudi</th>
+                <th scope="col">Vendredi</th>
+                <th scope="col">Samedi</th>
+                <th scope="col">Dimanche</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($showtimes as $showtime): ?>
-            <tr>
-                <td><?= $this->Number->format($showtime->id) ?></td>
-                <td><?= $showtime->has('movie') ? $this->Html->link($showtime->movie->name, ['controller' => 'Movies', 'action' => 'view', $showtime->movie->id]) : '' ?></td>
-                <td><?= h($showtime->start) ?></td>
-                <td><?= h($showtime->end) ?></td>
-            </tr>
-            <?php endforeach; ?>
+            <?for ($i = 1; $i <= 7; $i++) ?>
+                <tr>
+                    <td><?= $this->Number->format($showtime->id) ?></td>
+                    <td><?= $showtime->has('movie') ? $this->Html->link($showtime->movie->name, ['controller' => 'Movies', 'action' => 'view', $showtime->movie->id]) : '' ?></td>
+                    <td><?= h($showtime->start) ?></td>
+                    <td><?= h($showtime->end) ?></td>
+                </tr>
+            <?php endfor; ?>
         </tbody>
     </table>
 </div>
