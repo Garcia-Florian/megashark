@@ -56,14 +56,25 @@
             </tr>
         </thead>
         <tbody>
-            <?for ($i = 1; $i <= 7; $i++) ?>
-                <tr>
-                    <td><?= $this->Number->format($showtime->id) ?></td>
-                    <td><?= $showtime->has('movie') ? $this->Html->link($showtime->movie->name, ['controller' => 'Movies', 'action' => 'view', $showtime->movie->id]) : '' ?></td>
-                    <td><?= h($showtime->start) ?></td>
-                    <td><?= h($showtime->end) ?></td>
-                </tr>
-            <?php endfor; ?>
+        
+            <?php
+            
+                for ($i = 1; $i <= 7; $i++) {
+                    if(empty($showtimesThisWeek[$i])){
+                        print("<td></td>");
+                    }
+                    foreach ($showtimesThisWeek[$i] as $showtime){
+                        
+                        $name = $showtime->movie_id;
+                        $start = $showtime->start->format('H') . 'h/' . $showtime->end->format('H') . 'h';
+                        print("
+                                <td>$name <br>$start</td>
+                        ");
+                    }
+                }
+
+            ?>
+            
         </tbody>
     </table>
 </div>
